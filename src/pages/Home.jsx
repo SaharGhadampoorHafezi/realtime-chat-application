@@ -1,8 +1,16 @@
 import React from 'react'
+import Chat from '../Components/Chat'
+import Sidebar from '../Components/Sidebar'
+import '../style.scss'
 
 const Home = () => {
   return (
-    <div>Home</div>
+    <div className='home'>
+      <div className="container">
+        <Sidebar />
+        <Chat />
+      </div>
+    </div>
   )
 }
 
