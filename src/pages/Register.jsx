@@ -1,31 +1,47 @@
 import React from "react";
 import add from "../images/addAvatar.png";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase"
-
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { storage, auth } from "../firebase";
+import { useState } from "react";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const Register = () => {
-  const handleSubmit = (e) => {
+  const [error, setError] = useState(false);
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(e.target[0].value);
+    
     const displayName = e.target[0].value;
     const email = e.target[1].value;
     const password = e.target[2].value;
     const file = e.target[3].files[0];
 
-    
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        // ...
-        console.log(user);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-      });
+    try {
+      const res = await createUserWithEmailAndPassword(auth, email, password);
+
+      // const storage = storage();
+      const storageRef = ref(storage, displayName);
+
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      
+      uploadTask.on(
+        (error) => {
+          
+          setError(true);
+        },
+        () => {
+          
+          getDownloadURL(uploadTask.snapshot.ref).then( async (downloadURL) => {
+            await updateProfile(res.user , {
+              displayName,
+              photoURL: downloadURL
+            });
+          });
+        }
+      );
+    } catch (err) {
+      setError(true);
+    }
   };
   return (
     <div className="formContainer">
@@ -42,6 +58,7 @@ const Register = () => {
             <span>Add An Avatar</span>
           </label>
           <button>Sign up</button>
+          {error && <p>Something went wrong!</p>}
         </form>
         <p>You do have an account? Login</p>
       </div>
