@@ -49,7 +49,7 @@ const Search = () => {
         ? currentUser.uid + user.uid
         : user.uid + currentUser.uid;
     try {
-      const res = await getDocs(doc(db, "chats"));
+      const res = await getDocs(doc(db, "chats", combinedID));
 
       if (!res.exists()) {
         //create a chat in chat collection
@@ -74,10 +74,9 @@ const Search = () => {
           [combinedID + ".date"]: serverTimestamp(),
         });
       }
-    } catch (error) {
+    } catch (error) {}
       setUser(null);
       setUserName("");
-    }
   };
 
   return (
