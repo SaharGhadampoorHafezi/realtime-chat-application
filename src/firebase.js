@@ -19,6 +19,14 @@ const firebaseConfig = {
   storageBucket: "chat-77616.appspot.com",
   messagingSenderId: "689436160695",
   appId: "1:689436160695:web:f66c3991484758285e5332"
+
+
+  // apiKey: "AIzaSyDUoFkWUkhH8mRuy6sj3WjUkKiV5cG9bQw",
+  // authDomain: "chat2-fd822.firebaseapp.com",
+  // projectId: "chat2-fd822",
+  // storageBucket: "chat2-fd822.appspot.com",
+  // messagingSenderId: "511319785391",
+  // appId: "1:511319785391:web:ea71689bcd643a1d7eb95a"
 };
 
 // Initialize Firebase
